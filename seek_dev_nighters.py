@@ -3,33 +3,45 @@ from pytz import timezone
 from datetime import datetime
 
 
-def get_user_information():
+def get_the_number_of_pages():
     url_based = 'https://devman.org/api/challenges/solution_attempts/?page=1'
     content = requests.get(url_based)
     content_users = content.json()
-    pages = int(content_users['number_of_pages'])
+    the_number_of_pages = int(content_users['number_of_pages'])
+    return the_number_of_pages, content_users
 
-    for page in range(1, pages):
+
+def get_users_info_from_the_first_page(content_users):
+    for info_users in content_users['records']:
+        yield {'username': info_users['username'],
+               'timestamp': info_users['timestamp'],
+               'timezone': info_users['timezone'],
+               }
+
+def get_users_info(page_count):
+    start_page = 2
+    for page in range(start_page, page_count):
         url = 'http://devman.org/api/challenges/solution_attempts/?page={}'.format(page)
         content = requests.get(url)
         content = content.json()
-        for content_users in content['records']:
-            yield {'username': content_users['username'],
-                   'timestamp': content_users['timestamp'],
-                   'timezone': content_users['timezone'],
+
+        for info_users in content['records']:
+            yield {'username': info_users['username'],
+                   'timestamp': info_users['timestamp'],
+                   'timezone': info_users['timezone'],
                   }
 
 
 def get_midnight_user(info):
+    start_in_the_morning = 5
     time_zone = info['timezone']
     if info['timestamp']:
         time_devman = datetime.fromtimestamp(info['timestamp'])
         user_time = timezone(time_zone).fromutc(time_devman)
-        return bool(user_time.hour < 5)
+        return user_time.hour < start_in_the_morning
 
 
-def get_set_users():
-    content_user = get_user_information()
+def get_set_users(content_user):
     set_users = set()
     for user_info in content_user:
         if get_midnight_user(user_info):
@@ -38,4 +50,8 @@ def get_set_users():
 
 
 if __name__ == '__main__':
-    print(get_set_users())
+    page_count, content = get_the_number_of_pages()
+    content_from_the_first_page = get_users_info_from_the_first_page(content)
+    content_from_other_pages = get_users_info(page_count)
+    
+
