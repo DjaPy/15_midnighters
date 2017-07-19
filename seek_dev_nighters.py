@@ -54,7 +54,6 @@ def show_information():
         all_users_info = get_set_users(content_from_other_pages).update(content_from_the_first_page)
     all_users_info = get_set_users(content_from_other_pages)
     print('Users are night owls:')
-
     for number, user in enumerate(all_users_info):
         print(number, user)
 

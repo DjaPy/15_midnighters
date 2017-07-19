@@ -7,8 +7,23 @@ that are doing the commits after midnight.
 
 To run the script you need python 3.5(and later), Linux.
 ```bash
-python duplicates.py
+python seek_dev_nighters.py
 ```
+Result 
+```
+Users are night owls:
+0 id20889227
+1 АртемЧерняев
+2 KhorinVitaly
+3 nekrasow
+4 DmitriiSokolov
+5 piterskikhsa
+6 maksim.artemyev
+7 id164029976
+...
+
+```
+
 
 # Project Goals
 
