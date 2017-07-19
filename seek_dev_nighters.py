@@ -18,6 +18,7 @@ def get_users_info_from_the_first_page(content_users):
                'timezone': info_users['timezone'],
                }
 
+
 def get_users_info(page_count):
     start_page = 2
     for page in range(start_page, page_count):
@@ -56,6 +57,7 @@ def show_information():
     print('Users are night owls:')
     for number, user in enumerate(all_users_info):
         print(number, user)
+
 
 if __name__ == '__main__':
     page_count, content = get_the_number_of_pages()
