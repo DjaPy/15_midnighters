@@ -49,9 +49,17 @@ def get_set_users(content_user):
     return set_users
 
 
+def show_information():
+    if get_set_users(content_from_the_first_page):
+        all_users_info = get_set_users(content_from_other_pages).update(content_from_the_first_page)
+    all_users_info = get_set_users(content_from_other_pages)
+    print('Users are night owls:')
+
+    for number, user in enumerate(all_users_info):
+        print(number, user)
+
 if __name__ == '__main__':
     page_count, content = get_the_number_of_pages()
     content_from_the_first_page = get_users_info_from_the_first_page(content)
     content_from_other_pages = get_users_info(page_count)
-    
-
+    show_information()
