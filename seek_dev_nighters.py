@@ -3,9 +3,9 @@ from pytz import timezone
 from datetime import datetime
 
 
-def get_content_users(page):
-    url_based = 'https://devman.org/api/challenges/solution_attempts/?page={}'.format(page)
-    content = requests.get(url_based)
+def get_content_users(payload):
+    url_based = 'https://devman.org/api/challenges/solution_attempts/'
+    content = requests.get(url_based, params=payload)
     content_users = content.json()
     return content_users
 
@@ -27,20 +27,21 @@ def get_users_info_from_the_first_page(content_users):
     return get_users_info(content_users)
 
 
-def get_other_users_info(page_count):
+def get_other_users_info(page_count, key_for_url):
     start_page = 2
     number_for_range = page_count + 1
-    for page in range(start_page, number_for_range):
-        content = get_content_users(page)
-        content_from_other_pagess = get_users_info(content)
-    return content_from_other_pagess
+    for number_page in range(start_page, number_for_range):
+        payload = {key_for_url: number_page}
+        content = get_content_users(payload)
+        content_from_other_pages = get_users_info(content)
+    return content_from_other_pages
 
 
-def get_midnight_user(info):
+def get_midnight_user(info_files):
     start_in_the_morning = 5
-    time_zone = info['timezone']
-    if info['timestamp']:
-        time_devman = datetime.fromtimestamp(info['timestamp'])
+    time_zone = info_files['timezone']
+    if info_files['timestamp']:
+        time_devman = datetime.fromtimestamp(info_files['timestamp'])
         user_time = timezone(time_zone).fromutc(time_devman)
         return user_time.hour < start_in_the_morning
 
@@ -60,13 +61,16 @@ def show_information(content_from_the_first_page, content_from_other_pages):
     return all_users_info
 
 
-
 if __name__ == '__main__':
-    page = 1
-    content_users = get_content_users(page)
+    number_page = 1
+    key_for_url = 'page'
+    payload = {key_for_url: number_page}
+    content_users = get_content_users(payload)
     page_count = get_the_number_of_pages(content_users)
     content_from_the_first_page = get_users_info_from_the_first_page(content_users)
-    content_from_other_pages = get_other_users_info(page_count)
+    content_from_other_pages = get_other_users_info(page_count, key_for_url)
+    for content in content_from_other_pages:
+        print(content)
     all_users_info = show_information(content_from_the_first_page,
                                       content_from_other_pages)
     print('Users are night owls:')
