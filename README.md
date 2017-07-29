@@ -27,7 +27,7 @@ Users are night owls:
 **Or if there aren't night owls:**
 
 ```
-All users aren't night owls!
+All users sleep at night!
 ```
 
 
