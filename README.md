@@ -9,7 +9,8 @@ To run the script you need python 3.5(and later), Linux.
 ```bash
 python seek_dev_nighters.py
 ```
-Result 
+**Return:**
+
 ```
 Users are night owls:
 0 id20889227
@@ -22,6 +23,11 @@ Users are night owls:
 7 id164029976
 ...
 
+```
+**Or if there aren't night owls:**
+
+```
+All users aren't night owls!
 ```
 
 
